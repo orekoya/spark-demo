@@ -1,0 +1,25 @@
+version: "3"
+services:
+  spark-submitter:
+    image: spark-submit:2.4.3
+    container_name: spark-submitter
+    hostname: spark-submitter
+    environment:
+      - "SPARK_LOCAL_IP=spark-submitter"
+      - "SPARK_APPLICATION_JAR_LOCATION=/opt/spark-apps/app.jar"
+      - "SPARK_APPLICATION_MAIN_CLASS=io.hyperbuffer.samples.spark.FlightsDemo"
+      - "SPARK_APPLICATION_ARGS="
+      - "SPARK_OPTS=--driver-java-options -Ddm.logging.level=DEBUG --dynamicAllocation.minExecutors 5"
+    networks: 
+      spark-network:
+        ipv4_address: 172.16.0.10
+    volumes:
+       - ../mnt/spark-apps/:/opt/spark-apps
+       - ../mnt/spark-data:/opt/spark-data
+networks:
+  spark-network:
+    driver: bridge
+    ipam:
+     driver: default
+     config:
+       - subnet: 172.16.0.0/16

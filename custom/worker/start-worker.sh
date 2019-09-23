@@ -1,11 +1,13 @@
 #!/bin/bash
 
+export SPARK_HOME=/spark
+
 . "/spark/sbin/spark-config.sh"
 . "/spark/bin/load-spark-env.sh"
 
-mkdir -p $SPARK_WORKER_LOG
+. "${SPARK_HOME}/sbin"/spark-daemon.sh start org.apache.spark.deploy.ExternalShuffleService 1
 
-export SPARK_HOME=/spark
+mkdir -p $SPARK_WORKER_LOG
 
 ln -sf /dev/stdout $SPARK_WORKER_LOG/spark-worker.out
 
