@@ -20,7 +20,7 @@ gradle-app.setting
 ### Java ###
 *.class
 
-
+**/*.out
 
 # Package Files #
 *.jar
