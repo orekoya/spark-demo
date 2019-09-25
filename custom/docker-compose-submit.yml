@@ -10,12 +10,13 @@ services:
       - "SPARK_APPLICATION_MAIN_CLASS=io.hyperbuffer.samples.spark.FlightsDemo"
       - "SPARK_APPLICATION_ARGS="
       - "SPARK_OPTS=--driver-java-options -Ddm.logging.level=DEBUG --dynamicAllocation.minExecutors 5"
+      - "DEPLOY_MODE=cluster"
     networks: 
       spark-network:
         ipv4_address: 172.16.0.10
     volumes:
-       - ../mnt/spark-apps/:/opt/spark-apps
-       - ../mnt/spark-data:/opt/spark-data
+       - ./mnt/spark-apps/:/opt/spark-apps
+       - ./mnt/spark-data:/opt/spark-data
 networks:
   spark-network:
     driver: bridge
