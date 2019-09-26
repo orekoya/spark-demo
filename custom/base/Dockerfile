@@ -8,8 +8,9 @@ ENV SCALA_HOME=/usr/share/scala
 
 COPY ["./scala-${SCALA_VERSION}.tgz", "./sbt-1.2.8.tgz", "/tmp/"]
 
-RUN apk add --no-cache --virtual=.build-dependencies wget ca-certificates && \
+RUN apk update && apk add --no-cache --virtual=.build-dependencies wget ca-certificates && \
     apk add --no-cache bash curl jq python3 coreutils procps rsync openssh && \
+    apk add --no-cache openrc && \
     cd "/tmp" && \
     tar xzf "scala-${SCALA_VERSION}.tgz" && \
     mkdir "${SCALA_HOME}" && \
@@ -30,6 +31,12 @@ RUN wget --no-verbose http://apache.mirror.iphh.net/spark/spark-${SPARK_VERSION}
       && mv spark-${SPARK_VERSION}-bin-hadoop${HADOOP_VERSION} spark \
       && rm spark-${SPARK_VERSION}-bin-hadoop${HADOOP_VERSION}.tgz
 
+#start ssh service
+RUN rc-update add sshd
+
 # setup passwordless ssh access
 COPY ["./id_rsa", "./id_rsa.pub", "/.ssh/"]
 COPY ["./id_rsa.pub", "/.ssh/authorized_keys"]
+
+RUN /usr/bin/ssh-keygen -A && \
+    /usr/sbin/sshd && eval `ssh-agent -s` && ssh-add .ssh/id_rsa 
