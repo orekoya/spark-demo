@@ -31,10 +31,12 @@ RUN wget --no-verbose http://apache.mirror.iphh.net/spark/spark-${SPARK_VERSION}
       && rm spark-${SPARK_VERSION}-bin-hadoop${HADOOP_VERSION}.tgz
 
 # setup passwordless ssh access
-COPY ["./id_rsa", "./id_rsa.pub", "/.ssh/"]
-COPY ["./id_rsa.pub", "/.ssh/authorized_keys"]
 COPY ["./prepare-run-dir.sh", "/"]
-COPY ["./sshd_config", "/etc/ssh"]
-
+COPY ["./sshd_config", "/etc/ssh/"]
+COPY ["./config", "/root/.ssh/"]
 
 RUN /prepare-run-dir.sh
+
+COPY ["./docker/keys/root/id_rsa", "./docker/keys/root/id_rsa.pub", "/root/.ssh/"]
+COPY ["./docker/keys/root/id_rsa.pub", "/root/.ssh/authorized_keys"]
+COPY ["./docker/keys/host/", "/etc/ssh/"]

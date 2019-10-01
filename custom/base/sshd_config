@@ -1,5 +1,7 @@
 Port 22
 PasswordAuthentication no
+PermitRootLogin yes
 PubkeyAuthentication yes
 LogLevel VERBOSE
 ChallengeResponseAuthentication no
+StrictModes no

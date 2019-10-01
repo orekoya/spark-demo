@@ -1,5 +1,9 @@
 #!/bin/bash
 
+/usr/sbin/sshd && eval `ssh-agent -s` && ssh-add /root/.ssh/id_rsa;
+
+echo "***** ssh setup seems to have gone ok *********"
+
 export SPARK_HOME=/spark
 
 export SPARK_MASTER_HOST=`hostname`
